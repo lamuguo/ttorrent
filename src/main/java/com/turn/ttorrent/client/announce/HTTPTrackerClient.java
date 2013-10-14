@@ -119,8 +119,9 @@ public class HTTPTrackerClient extends TrackerClient {
 			throw new AnnounceException("No response or unreachable tracker!");
 		}
 
+		ByteArrayOutputStream baos = null;
 		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			baos = new ByteArrayOutputStream();
 			baos.write(in);
 
 			// Parse and handle the response
@@ -133,6 +134,13 @@ public class HTTPTrackerClient extends TrackerClient {
 			throw new AnnounceException("Tracker message violates expected " +
 				"protocol (" + mve.getMessage() + ")", mve);
 		} finally {
+			try {
+				if (baos != null) {
+					baos.close();
+				}
+			} catch (IOException ioe) {
+				logger.warn("Problem ensuring output stream closed!", ioe);
+			}
 			// Make sure we close everything down at the end to avoid resource
 			// leaks.
 			try {
