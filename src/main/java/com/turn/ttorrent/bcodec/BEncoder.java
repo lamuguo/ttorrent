@@ -43,6 +43,7 @@ import java.util.Set;
  */
 public class BEncoder {
 
+	// bencode BEValue
 	@SuppressWarnings("unchecked")
 	public static void bencode(Object o, OutputStream out)
 		throws IOException, IllegalArgumentException {
